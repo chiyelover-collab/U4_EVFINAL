@@ -1,7 +1,9 @@
+// src/pages/admin/UsersPage.jsx
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Table, Button, Badge, Spinner, InputGroup, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Badge, InputGroup, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import UserFormModal from '../../components/admin/UserFormModal';
+import ManagementTable from '../../components/admin/ManagementTable';
 import { getUsers, createUser, updateUser, deleteUser } from '../../services/AdminServices';
 import '../../assets/css/DashboardAdmin.css'; 
 
@@ -106,6 +108,13 @@ const UsersPage = () => {
         return 'success'; 
     };
 
+    const instrucciones = [
+        { title: "Búsqueda", text: "Filtre instantáneamente por nombre o correo desde la barra superior." },
+        { title: "Gestión", text: <span>Use los botones de colores para <span className="text-warning fw-bold">Editar</span> o <span className="text-danger fw-bold">Eliminar</span> registros.</span> },
+        { title: "Roles", text: "Los badges identifican el nivel de acceso (Admin, Coach, User)." },
+        { title: "Seguridad", text: "Al crear un usuario, asegúrese de que las contraseñas coincidan." }
+    ];
+
     return (
         <Container as="main" className="my-4">
             <Row className="mb-4 align-items-center">
@@ -129,110 +138,44 @@ const UsersPage = () => {
                 </Col>
             </Row>
 
-            <Row className="mb-4">
-                <Col xs={12}>
-                    <Card as="article" className="class_card1 w-100" style={{ maxWidth: '100%' }}>
-                        <Card.Header className="class_card_header">
-                            <h5 className="class_h5 mb-0">
-                                <i className="fas fa-list me-2"></i> Listado de Usuarios
-                            </h5>
-                        </Card.Header>
-                        <Card.Body className="p-0">
-                            {loading ? (
-                                <div className="text-center p-5">
-                                    <Spinner animation="border" variant="primary" />
-                                    <p className="mt-3">Cargando usuarios...</p>
-                                </div>
-                            ) : (
-                                <div 
-                                    className="table-responsive class_table-responsive m-0"
-                                    style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
-                                >
-                                    <Table hover className="align-middle text-center mb-0">
-                                        <thead className="class_table_head" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Nombre Completo</th>
-                                                <th>Email</th>
-                                                <th>Rol</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="class_tbody">
-                                            {usuariosFiltrados.length > 0 ? (
-                                                usuariosFiltrados.map((user) => (
-                                                    <tr key={user.id}>
-                                                        <td>{String(user.id).padStart(3, '0')}</td>
-                                                        <td className="text-center fw-bold">{user.full_name}</td>
-                                                        <td className="text-center">{user.email}</td>
-                                                        <td>
-                                                            <Badge bg={getBadgeColor(user.role)}>
-                                                                {user.role}
-                                                            </Badge>
-                                                        </td>
-                                                        <td>
-                                                            <Button 
-                                                                variant="warning" 
-                                                                size="sm" 
-                                                                className="me-2"
-                                                                onClick={() => abrirModalEditar(user)}
-                                                            >
-                                                                <i className="fas fa-edit"></i>
-                                                            </Button>
-                                                            <Button 
-                                                                variant="danger" 
-                                                                size="sm"
-                                                                onClick={() => handleEliminar(user.id, user.full_name)}
-                                                            >
-                                                                <i className="fas fa-trash"></i>
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="5" className="text-center py-4">
-                                                        No se encontraron usuarios que coincidan con la búsqueda.
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            )}
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-
-            <Row className="mb-5">
-                <Col xs={12}>
-                    <Card as="aside" className="class_card1 w-100" style={{ maxWidth: '100%' }}>
-                        <Card.Header className="class_card_header">
-                            <h5 className="class_h5 mb-0">
-                                <i className="fas fa-info-circle me-2"></i> Instrucciones de Uso
-                            </h5>
-                        </Card.Header>
-                        <Card.Body>
-                            <ul className="list-group list-group-flush class_list1">
-                                <li className="list-group-item bg-transparent px-0 border-0 pt-0">
-                                    <strong>1. Búsqueda:</strong> Filtre instantáneamente por nombre o correo desde la barra superior.
-                                </li>
-                                <li className="list-group-item bg-transparent px-0 border-0">
-                                    <strong>2. Gestión:</strong> Use los botones de colores para <span className="text-warning fw-bold">Editar</span> o <span class="text-danger fw-bold">Eliminar</span> registros.
-                                </li>
-                                <li className="list-group-item bg-transparent px-0 border-0">
-                                    <strong>3. Roles:</strong> Los badges identifican el nivel de acceso (Admin, Coach, User).
-                                </li>
-                                <li className="list-group-item bg-transparent px-0 border-0 pb-0">
-                                    <strong>4. Seguridad:</strong> Al crear un usuario, asegúrese de que las contraseñas coincidan.
-                                </li>
-                            </ul>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-
+            <ManagementTable 
+                title="Listado de Usuarios"
+                icon="fa-list"
+                columns={["ID", "Nombre Completo", "Email", "Rol", "Acciones"]}
+                data={usuariosFiltrados}
+                loading={loading}
+                emptyMessage="No se encontraron usuarios que coincidan con la búsqueda."
+                instructions={instrucciones}
+                renderRow={(user) => (
+                    <tr key={user.id}>
+                        <td>{String(user.id).padStart(3, '0')}</td>
+                        <td className="text-center fw-bold">{user.full_name}</td>
+                        <td className="text-center">{user.email}</td>
+                        <td>
+                            <Badge bg={getBadgeColor(user.role)}>
+                                {user.role}
+                            </Badge>
+                        </td>
+                        <td>
+                            <Button 
+                                variant="warning" 
+                                size="sm" 
+                                className="me-2"
+                                onClick={() => abrirModalEditar(user)}
+                            >
+                                <i className="fas fa-edit"></i>
+                            </Button>
+                            <Button 
+                                variant="danger" 
+                                size="sm"
+                                onClick={() => handleEliminar(user.id, user.full_name)}
+                            >
+                                <i className="fas fa-trash"></i>
+                            </Button>
+                        </td>
+                    </tr>
+                )}
+            />
 
             <UserFormModal 
                 show={showModal} 
@@ -240,7 +183,6 @@ const UsersPage = () => {
                 handleSave={handleGuardar} 
                 selectedUser={usuarioSeleccionado} 
             />
-
         </Container>
     );
 };

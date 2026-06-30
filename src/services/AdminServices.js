@@ -1,7 +1,8 @@
 const API_URL = "http://localhost:3000/api/users"; 
 const SPORTS_API_URL = "http://localhost:3000/api/sports";
 const ROOMS_API_URL = "http://localhost:3000/api/rooms"
-
+const SPORT_ROOMS_API_URL = "http://localhost:3000/api/sport-rooms";
+const SCHEDULES_API_URL = "http://localhost:3000/api/class-schedules";
 function getToken() {
     return localStorage.getItem("token");
 }
@@ -163,5 +164,82 @@ export async function deleteRoom(id) {
     if (!response.ok) {
         throw new Error("Error al eliminar sala");
     }
+    return true;
+}
+
+export async function getAssignments() {
+    const response = await fetch(SPORT_ROOMS_API_URL, { headers: getHeaders() });
+    if (!response.ok) throw new Error("Error al obtener asignaciones");
+    return response.json();
+}
+
+export async function createAssignment(data) {
+    const response = await fetch(SPORT_ROOMS_API_URL, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Error al crear asignación");
+    return result;
+}
+
+export async function updateAssignment(id, data) {
+    const response = await fetch(`${SPORT_ROOMS_API_URL}/${id}`, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Error al actualizar asignación");
+    return result;
+}
+
+export async function deleteAssignment(id) {
+    const response = await fetch(`${SPORT_ROOMS_API_URL}/${id}`, {
+        method: "DELETE",
+        headers: getHeaders(),
+    });
+    if (!response.ok) throw new Error("Error al eliminar asignación");
+    return true;
+}
+
+export async function getSchedules() {
+    const response = await fetch(SCHEDULES_API_URL, {
+        method: "GET",
+        headers: getHeaders(),
+    });
+    if (!response.ok) throw new Error("Error al obtener la lista de horarios");
+    return response.json();
+}
+
+export async function createSchedule(scheduleData) {
+    const response = await fetch(SCHEDULES_API_URL, {
+        method: "POST",
+        headers: getHeaders(),
+        body: JSON.stringify(scheduleData),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Error al crear horario");
+    return data;
+}
+
+export async function updateSchedule(id, scheduleData) {
+    const response = await fetch(`${SCHEDULES_API_URL}/${id}`, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(scheduleData),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Error al actualizar horario");
+    return data;
+}
+
+export async function deleteSchedule(id) {
+    const response = await fetch(`${SCHEDULES_API_URL}/${id}`, {
+        method: "DELETE",
+        headers: getHeaders(),
+    });
+    if (!response.ok) throw new Error("Error al eliminar horario");
     return true;
 }

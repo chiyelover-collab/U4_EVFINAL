@@ -23,6 +23,16 @@ const NavbarAdmin = () => {
         subtituloHeader = "Administra los deportes en el sistema.";
     }
 
+    if (location.pathname.includes('/admin/salas')) {
+        tituloHeader = "Gestión de Salas";
+        subtituloHeader = "Administra las salas en el sistema.";
+    }
+
+    if (location.pathname.includes('/admin/asignaciones')) {
+        tituloHeader = "Gestión de Asignaciones";
+        subtituloHeader = "Administra las asignaciones de deportes, salas y entrenadores.";
+    }
+
 
     const handleCerrarSesion = () => {
         localStorage.clear(); 
@@ -53,7 +63,7 @@ const NavbarAdmin = () => {
                     <div className="collapse navbar-collapse" id="navUsers">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link class_a1" to="/">Inicio</Link>
+                                <Link className="nav-link class_a1" to="/admin/dashboard">Inicio</Link>
                             </li>
                             <li className="nav-item">
                                 {/* Se activa dinámicamente si la URL es la de gestión */}
@@ -71,7 +81,7 @@ const NavbarAdmin = () => {
                                 <Link className="nav-link class_a1" to="/admin/salas">Salas</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link class_a1" to="#">Configuración</Link>
+                                <Link className="nav-link class_a1" to="/admin/asignaciones">Asignaciones</Link>
                             </li>
                         </ul>
                         

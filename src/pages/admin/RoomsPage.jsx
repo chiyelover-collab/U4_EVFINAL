@@ -1,7 +1,9 @@
+// src/pages/admin/RoomsPage.jsx
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Table, Button, Spinner, InputGroup, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, InputGroup, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import RoomFormModal from '../../components/admin/RoomFormModal';
+import ManagementTable from '../../components/admin/ManagementTable';
 import { getRooms, createRoom, updateRoom, deleteRoom } from '../../services/AdminServices';
 import '../../assets/css/DashboardAdmin.css';
 
@@ -113,6 +115,13 @@ const RoomsPage = () => {
         }
     };
 
+    const instrucciones = [
+        { title: "Búsqueda", text: "Filtre instantáneamente por nombre de la sala usando la barra superior." },
+        { title: "Gestión", text: <span>Use los botones de colores para <span className="text-warning fw-bold">Editar</span> o <span className="text-danger fw-bold">Eliminar</span> las salas.</span> },
+        { title: "Estado", text: "Utilice el interruptor (Switch) para marcar una sala como Activa o Inactiva según su disponibilidad." },
+        { title: "Sincronización", text: "Utilice el botón Refrescar para traer los últimos datos actualizados de las salas." }
+    ];
+
     return (
         <Container as="main" className="my-4">
             <Row className="mb-4 align-items-center">
@@ -139,80 +148,45 @@ const RoomsPage = () => {
                 </Col>
             </Row>
 
-            <Row className="mb-4">
-                <Col xs={12}>
-                    <Card className="class_card1 w-100" style={{ maxWidth: '100%' }}>
-                        <Card.Header className="class_card_header">
-                            <h5 className="class_h5 mb-0">
-                                <i className="fas fa-door-open me-2"></i> Listado de Salas
-                            </h5>
-                        </Card.Header>
-                        <Card.Body className="p-0">
-                            {loading ? (
-                                <div className="text-center p-5">
-                                    <Spinner animation="border" variant="primary" />
-                                    <p className="mt-3">Cargando salas...</p>
-                                </div>
-                            ) : (
-                                <div className="table-responsive" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-                                    <Table hover className="align-middle text-center mb-0">
-                                        <thead className="class_table_head" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Descripción</th>
-                                                <th>Capacidad</th>
-                                                <th>Ubicación</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="class_tbody">
-                                            {salasFiltradas.length > 0 ? (
-                                                salasFiltradas.map((sala) => (
-                                                    <tr key={sala.id}>
-                                                        <td className="fw-bold">{sala.name}</td>
-                                                        <td>{sala.description}</td>
-                                                        <td>{sala.capacity} personas</td>
-                                                        <td>{sala.location || "—"}</td>
-                                                        <td>
-                                                            <div className="d-flex justify-content-center">
-                                                                <Form.Check
-                                                                    type="switch"
-                                                                    id={`switch-${sala.id}`}
-                                                                    label={sala.status ? "Activa" : "Inactiva"}
-                                                                    checked={sala.status}
-                                                                    onChange={() => handleToggleStatus(sala)}
-                                                                    className={sala.status ? "text-success fw-bold m-0" : "text-secondary m-0"}
-                                                                />
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div className="d-flex justify-content-center gap-2">
-                                                                <Button variant="warning" size="sm" onClick={() => abrirModalEditar(sala)}>
-                                                                    <i className="fas fa-edit"></i>
-                                                                </Button>
-                                                                <Button variant="danger" size="sm" onClick={() => handleEliminar(sala.id, sala.name)}>
-                                                                    <i className="fas fa-trash"></i>
-                                                                </Button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan="6" className="text-center py-4">
-                                                        No se encontraron salas.
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            )}
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+            <ManagementTable 
+                title="Listado de Salas"
+                icon="fa-door-open"
+                columns={["Nombre", "Descripción", "Capacidad", "Ubicación", "Estado", "Acciones"]}
+                data={salasFiltradas}
+                loading={loading}
+                emptyMessage="No se encontraron salas."
+                instructions={instrucciones}
+                renderRow={(sala) => (
+                    <tr key={sala.id}>
+                        <td className="fw-bold">{sala.name}</td>
+                        <td>{sala.description}</td>
+                        <td>{sala.capacity} personas</td>
+                        <td>{sala.location || "—"}</td>
+                        <td>
+                            <div className="d-flex justify-content-center">
+                                <Form.Check
+                                    type="switch"
+                                    id={`switch-${sala.id}`}
+                                    label={sala.status ? "Activa" : "Inactiva"}
+                                    checked={sala.status}
+                                    onChange={() => handleToggleStatus(sala)}
+                                    className={sala.status ? "text-success fw-bold m-0" : "text-secondary m-0"}
+                                />
+                            </div>
+                        </td>
+                        <td>
+                            <div className="d-flex justify-content-center gap-2">
+                                <Button variant="warning" size="sm" onClick={() => abrirModalEditar(sala)}>
+                                    <i className="fas fa-edit"></i>
+                                </Button>
+                                <Button variant="danger" size="sm" onClick={() => handleEliminar(sala.id, sala.name)}>
+                                    <i className="fas fa-trash"></i>
+                                </Button>
+                            </div>
+                        </td>
+                    </tr>
+                )}
+            />
 
             <RoomFormModal
                 show={showModal}
