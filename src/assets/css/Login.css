@@ -1,0 +1,79 @@
+/* =========================================
+   Fondo General (.class_body original)
+========================================= */
+.bg-lightsteelblue {
+    background-color: lightsteelblue;
+}
+
+/* =========================================
+   Contenedor del Formulario (.class_form1 original)
+========================================= */
+.custom-card {
+    /* Mantienes tu borde estilo "groove" y tu color morado claro */
+    border: 10px groove #bca2dd !important; 
+    background-color: white;
+}
+
+/* =========================================
+   Textos y Etiquetas (.class_h3 y .class_label)
+========================================= */
+.custom-title {
+    color: #3d225d;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
+
+.custom-label {
+    color: indigo;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+/* =========================================
+   Botón Principal (.class_botton original)
+========================================= */
+.custom-btn {
+    background-color: #492970 !important;
+    color: white !important;
+    font-family: 'Trebuchet MS', sans-serif;
+    /* Mantenemos tu sombra original */
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.4); 
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto al pasar el mouse por encima del botón */
+.custom-btn:hover {
+    background-color: #351d52 !important; 
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+}
+
+/* =========================================
+   Enlaces Inferiores (.class_a y .class_a1)
+========================================= */
+.custom-link {
+    color: #fabd05; /* Tu color amarillo/naranja */
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 13px;
+}
+
+/* Efecto al pasar el mouse por encima del enlace */
+.custom-link:hover {
+    color: #d19c04; 
+}
+
+.class_input_error {
+    border: 2px solid #dc3545 !important;
+    background-color: #fff8f8 !important;
+}
+
+/* El texto de error debajo del input */
+.class_men_error {
+    color: #dc3545;
+    font-size: 12px;
+    display: block;
+    height: 15px; /* Mantiene el espacio físico para que el formulario no brinque */
+    margin-top: 2px;
+    margin-bottom: 8px;
+    font-family: 'Trebuchet MS', sans-serif;
+}
