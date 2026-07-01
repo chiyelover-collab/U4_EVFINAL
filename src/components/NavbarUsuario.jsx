@@ -33,10 +33,10 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarDashboardUser">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link class_a1" to="/">Inicio</Link>
+                                <Link className="nav-link class_a1" to="/user/dashboard">Inicio</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link class_a1" href="#">Clases</a>
+                                <Link className="nav-link class_a1" to="/user/clases-disponibles">Clases</Link>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link class_a1" href="#">Reservas</a>

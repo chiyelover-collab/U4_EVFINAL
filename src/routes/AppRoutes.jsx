@@ -19,6 +19,8 @@ import ProtectedRoute from "./ProtectedRoutes"
 import UsersPage from "../pages/admin/UsersPage.jsx";
 import SportsManagement from "../pages/admin/SportManagment.jsx";
 import SportRoomPage from "../pages/admin/SportRoomPage.jsx";
+import ClassSchedulePage from "../pages/admin/ClassSchedulePage.jsx";
+import AvailableClasses from "../pages/user/AvailableClasses.jsx";
 
 function AppRoutes() {
     return (
@@ -33,6 +35,7 @@ function AppRoutes() {
                 <Route element={<ProtectedRoute rolPermitido="user" />}>
                     <Route path="/user" element={<UserLayout />}>
                         <Route path="dashboard" element={<UserDashboard />} />
+                        <Route path="clases-disponibles" element={<AvailableClasses />} />
                     </Route>
                 </Route>
 
@@ -49,6 +52,7 @@ function AppRoutes() {
                         <Route path = "deportes" element ={<SportsManagement />} />
                         <Route path="salas" element={<RoomsPage />} />
                         <Route path = "asignaciones" element = {<SportRoomPage />} />
+                        <Route path = "horarios" element = {<ClassSchedulePage />} />
                     </Route>
                 </Route>
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const GenericFormModal = ({ show, handleClose, handleSave, title, fields, initialData, selectedItem }) => {
+const GenericFormModal = ({ show, handleClose, handleSave, title, fields, initialData, selectedItem, errores = {} }) => {
     const [formData, setFormData] = useState(initialData);
 
     useEffect(() => {
@@ -27,9 +27,15 @@ const GenericFormModal = ({ show, handleClose, handleSave, title, fields, initia
                     {fields.map((field) => (
                         <Form.Group key={field.name} className="mb-3">
                             <Form.Label>{field.label}</Form.Label>
+                            
                             {field.type === 'select' ? (
-                                <Form.Select name={field.name} value={formData[field.name]} onChange={handleChange}>
-                                    <option value="">Seleccione...</option>
+                                <Form.Select 
+                                    name={field.name} 
+                                    value={formData[field.name] || ""} 
+                                    onChange={handleChange}
+                                    className={errores[field.name] ? 'class_input_error' : ''}
+                                >
+                                    <option value="" disabled>Seleccione...</option>
                                     {field.options.map(opt => (
                                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                                     ))}
@@ -38,17 +44,24 @@ const GenericFormModal = ({ show, handleClose, handleSave, title, fields, initia
                                 <Form.Control 
                                     type={field.type} 
                                     name={field.name} 
-                                    value={formData[field.name]} 
+                                    value={formData[field.name] || ""} 
                                     onChange={handleChange} 
                                     placeholder={field.placeholder}
+                                    className={errores[field.name] ? 'class_input_error' : ''}
+                                    maxLength={field.maxLength}
                                 />
+                            )}
+                            
+                            {/* Aquí es donde aparece tu texto rojo de error */}
+                            {errores[field.name] && (
+                                <span className="text-danger small d-block mt-1">{errores[field.name]}</span>
                             )}
                         </Form.Group>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
-                    <Button type="submit" className="class_button1">Guardar</Button>
+                    <Button type="submit" className="class_button1 border-0">Guardar</Button>
                 </Modal.Footer>
             </Form>
         </Modal>

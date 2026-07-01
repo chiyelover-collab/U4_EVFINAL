@@ -33,6 +33,11 @@ const NavbarAdmin = () => {
         subtituloHeader = "Administra las asignaciones de deportes, salas y entrenadores.";
     }
 
+    if (location.pathname.includes('/admin/horarios')) {
+        tituloHeader = "Gestión de Horarios";
+        subtituloHeader = "Administra los horarios de las asignaciones.";
+    }
+
 
     const handleCerrarSesion = () => {
         localStorage.clear(); 
@@ -82,6 +87,9 @@ const NavbarAdmin = () => {
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link class_a1" to="/admin/asignaciones">Asignaciones</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link class_a1" to="/admin/horarios">Horarios</Link>
                             </li>
                         </ul>
                         
