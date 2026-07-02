@@ -33,8 +33,8 @@
     width: 100%;
     height: 98%;
     box-shadow: 0px 5px 15px rgba(0,0,0,0.7);
-    border-radius: 12px !important; /* Aplica redondeo a las 4 esquinas */
-    overflow: hidden;               /* IMPORTANTE: hace que lo de adentro respete el redondeo */
+    border-radius: 12px !important; 
+    overflow: hidden;               
     border: 1px solid #dee2e6;      
 }
 
@@ -101,4 +101,17 @@
     font-family: 'Trebuchet MS', sans-serif;
     color: #000000;
     /* Sin font-weight: bold */
+}
+
+/* Sobrescribir el morado del Admin por el celeste del Usuario */
+.user_body .class_card_header,
+.user_body .class_table_head {
+    background-color: #66b3ff !important;
+}
+
+/* Para asegurar que el texto del modal y la tabla respeten tu estilo */
+.user_body .class_card_header .class_h5,
+.user_body .class_card_header .modal-title {
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color: #000000 !important;
 }

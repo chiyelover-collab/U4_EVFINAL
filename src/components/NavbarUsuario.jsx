@@ -1,10 +1,27 @@
 // src/components/Navbar.jsx
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logo from '../assets/imagenes/logo_empresa_letra_v1.png'; // Ajusta la ruta a tu carpeta de imágenes
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    
+    let tituloHeader = "Dashboard Usuario";
+    let subtituloHeader = "Todo lo que necesitas se encuentra aquí.";
+
+
+    if (location.pathname.includes('/user/clases-disponibles')) {
+        tituloHeader = "Clases Disponibles";
+        subtituloHeader = "Encuentra la informacion de nuestras clases disponibles.";
+    }
+
+        if (location.pathname.includes('/user/reservas')) {
+        tituloHeader = "Gestión de Reservas";
+        subtituloHeader = "Maneja desde aquí tus reservas.";
+    }
+
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -20,7 +37,8 @@ const Navbar = () => {
                         <img src={logo} alt="logo" className="class_logo class_img_logo" />
                     </div>
                     <div className="col-md-4 text-center">
-                        <h1 className="class_h1"> Dashboard Usuario </h1>
+                        <h1 className="class_h1 mb-1"> {tituloHeader} </h1>
+                        <h6 className="mb-2">{subtituloHeader}</h6>
                     </div>
                 </div>
             </header>
@@ -39,7 +57,7 @@ const Navbar = () => {
                                 <Link className="nav-link class_a1" to="/user/clases-disponibles">Clases</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link class_a1" href="#">Reservas</a>
+                                <Link className="nav-link class_a1" to="/user/reservas">Reservas</Link>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link class_a1" href="#">Asistencia Mensual</a>

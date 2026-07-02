@@ -25,12 +25,6 @@ const AvailableClasses = () => {
     return (
         <div className="user_body">
             <main className="container pt-5 pb-5">
-                {/* Título principal con fuente del proyecto */}
-                <h2 className="text-center mb-5" style={{ 
-                    color: '#003366', 
-                    fontFamily: 'Trebuchet MS, sans-serif' 
-                }}>Clases Disponibles</h2>
-                
                 <div className="row justify-content-center">
                     {asignaciones.map((a) => (
                         <div key={a.id} className="col-12 col-md-4 mb-4">

@@ -21,6 +21,7 @@ import SportsManagement from "../pages/admin/SportManagment.jsx";
 import SportRoomPage from "../pages/admin/SportRoomPage.jsx";
 import ClassSchedulePage from "../pages/admin/ClassSchedulePage.jsx";
 import AvailableClasses from "../pages/user/AvailableClasses.jsx";
+import ReservationManagement from "../pages/user/ReservationManagement.jsx";
 
 function AppRoutes() {
     return (
@@ -36,6 +37,7 @@ function AppRoutes() {
                     <Route path="/user" element={<UserLayout />}>
                         <Route path="dashboard" element={<UserDashboard />} />
                         <Route path="clases-disponibles" element={<AvailableClasses />} />
+                        <Route path="reservas" element={<ReservationManagement />} />
                     </Route>
                 </Route>
 
