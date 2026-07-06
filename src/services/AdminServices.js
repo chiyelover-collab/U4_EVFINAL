@@ -1,9 +1,9 @@
-const API_URL = "http://localhost:3000/api/users"; 
-const SPORTS_API_URL = "http://localhost:3000/api/sports";
-const ROOMS_API_URL = "http://localhost:3000/api/rooms"
-const SPORT_ROOMS_API_URL = "http://localhost:3000/api/sport-rooms";
-const SCHEDULES_API_URL = "http://localhost:3000/api/class-schedules";
-function getToken() {
+const VITE_API_URL = import.meta.env.VITE_API_URL
+const API_URL = `${VITE_API_URL}/users`; 
+const SPORTS_API_URL = `${VITE_API_URL}/sports`;
+const ROOMS_API_URL = `${VITE_API_URL}/rooms`;
+const SPORT_ROOMS_API_URL = `${VITE_API_URL}/sport-rooms`;
+const SCHEDULES_API_URL = `${VITE_API_URL}/class-schedules`;function getToken() {
     return localStorage.getItem("token");
 }
 

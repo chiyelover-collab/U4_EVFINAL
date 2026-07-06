@@ -1,7 +1,8 @@
 
-const API_URL = "http://localhost:3000/api/users";
-const API_URL_RESERVATIONS = "http://localhost:3000/api/reservations";
-const AUTH_API_URL = "http://localhost:3000/api/auth";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${VITE_API_URL}/users`;
+const API_URL_RESERVATIONS = `${VITE_API_URL}/reservations`;
+const AUTH_API_URL = `${VITE_API_URL}/auth`;
 
 
 const getHeaders = () => {
