@@ -22,6 +22,7 @@ import SportRoomPage from "../pages/admin/SportRoomPage.jsx";
 import ClassSchedulePage from "../pages/admin/ClassSchedulePage.jsx";
 import AvailableClasses from "../pages/user/AvailableClasses.jsx";
 import ReservationManagement from "../pages/user/ReservationManagement.jsx";
+import UserProfile from "../components/UserProfile.jsx";
 
 function AppRoutes() {
     return (
@@ -38,12 +39,14 @@ function AppRoutes() {
                         <Route path="dashboard" element={<UserDashboard />} />
                         <Route path="clases-disponibles" element={<AvailableClasses />} />
                         <Route path="reservas" element={<ReservationManagement />} />
+                        <Route path="perfil" element={<UserProfile role = "user" />} />
                     </Route>
                 </Route>
 
                 <Route element={<ProtectedRoute rolPermitido="coach" />}>
                     <Route path="/coach" element={<CoachLayout />}>
                         <Route path="dashboard" element={<CoachDashboard />} />
+                        <Route path="perfil" element={<UserProfile role = "coach" />} />
                     </Route>
                 </Route>
 
@@ -55,6 +58,7 @@ function AppRoutes() {
                         <Route path="salas" element={<RoomsPage />} />
                         <Route path = "asignaciones" element = {<SportRoomPage />} />
                         <Route path = "horarios" element = {<ClassSchedulePage />} />
+                        <Route path="perfil" element={<UserProfile role = "admin" />} />
                     </Route>
                 </Route>
 

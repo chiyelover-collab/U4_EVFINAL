@@ -7,7 +7,7 @@ import AuthServices from '../services/AuthServices';
 const Register = () => {
     const navigate = useNavigate();
 
-    // 1. Aquí guardaremos todo lo que el usuario escriba
+
     const [formData, setFormData] = useState({
         email: '',
         contrasena: '',
@@ -19,10 +19,10 @@ const Register = () => {
         objetivo: ''
     });
 
-    // 2. Aquí guardaremos los mensajes de error de cada campo
+
     const [errores, setErrores] = useState({});
 
-    // 3. Esta función se activará cada vez que el usuario escriba algo
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -31,12 +31,11 @@ const Register = () => {
         });
     };
 
-    // 1. Expresiones regulares extraídas de tu código original
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_]).{8,}$/;
     const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
-    // 2. Función para validar todos los campos
     const validarFormulario = () => {
         let erroresTemporales = {};
         let esValido = true;
@@ -64,7 +63,7 @@ const Register = () => {
             esValido = false;
         }
 
-        // --- ESTA ES LA VALIDACIÓN DE LA FECHA ---
+
         if (!formData.edad || formData.edad === '') {
             erroresTemporales.edad = "Campo obligatorio";
             esValido = false;
@@ -80,22 +79,22 @@ const Register = () => {
             esValido = false;
         }
 
-        // Validación de los botones de opción (nivel)
+
         if (!formData.nivel) {
             erroresTemporales.nivel = "Selecciona una opción";
             esValido = false;
         }
         
-        // Guardamos el objeto de errores en el estado de React
+
         setErrores(erroresTemporales);
         return esValido;
     };
 
-    // 3. Función para manejar el clic en "Registrarse"
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Evitamos que la página se recargue
 
-        // Si la validación pasa, procedemos a llamar a tu API
+    const handleSubmit = async (e) => {
+        e.preventDefault(); 
+
+
         if (validarFormulario()) {
             try {
                 const userData = {
@@ -139,7 +138,6 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    {/* Mensaje de error general del servidor (ahora en texto rojo sutil) */}
                     {errores.global && (
                         <div className="class_men_error text-center fw-bold mb-3" style={{ height: 'auto' }}>
                             {errores.global}
@@ -156,7 +154,6 @@ const Register = () => {
                             value={formData.email}
                             onChange={handleChange}
                         />
-                        {/* Texto de error en rojo usando tu clase original */}
                         <span className="class_men_error" style={{ visibility: errores.email ? 'visible' : 'hidden' }}>
                             {errores.email || 'espacio'} 
                         </span>
@@ -223,7 +220,7 @@ const Register = () => {
                     <div className="mb-3">
                         <label className="form-label custom-label">¿Practicas deporte?:</label>
                         
-                        {/* Si hay error, esta caja entera se pintará con el fondo rojizo y el borde rojo */}
+                        
                         <div className={`d-flex gap-3 mt-1 p-2 rounded ${errores.nivel ? 'class_input_error border-danger' : ''}`}>
                             <div className="form-check">
                                 <input className="form-check-input" type="radio" name="nivel" value="Si" id="radioSi" checked={formData.nivel === "Si"} onChange={handleChange} />
@@ -239,7 +236,7 @@ const Register = () => {
                             </div>
                         </div>
 
-                        {/* Tu clásico mensaje de error rojo en la parte inferior */}
+                        
                         <span className="class_men_error" style={{ visibility: errores.nivel ? 'visible' : 'hidden' }}>
                             {errores.nivel || 'espacio'}
                         </span>

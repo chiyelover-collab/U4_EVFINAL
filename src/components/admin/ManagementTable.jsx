@@ -15,7 +15,6 @@ const ManagementTable = ({
 }) => {
     return (
         <>
-            {/* Tarjeta de la Tabla */}
             <Row className="mb-4">
                 <Col xs={12}>
                     <Card as="article" className="class_card1 w-100" style={{ maxWidth: '100%' }}>
@@ -59,8 +58,7 @@ const ManagementTable = ({
                     </Card>
                 </Col>
             </Row>
-
-            {/* Tarjeta de Instrucciones (Renderizado solo si se pasan instrucciones) */}
+            
             {instructions.length > 0 && (
                 <Row className="mb-5">
                     <Col xs={12}>

@@ -38,6 +38,11 @@ const NavbarAdmin = () => {
         subtituloHeader = "Administra los horarios de las asignaciones.";
     }
 
+    if (location.pathname.includes('/admin/perfil')) {
+        tituloHeader = "Perfil de Administrador";
+        subtituloHeader = "Gestiona tu información personal y contraseña";
+    }
+
 
     const handleCerrarSesion = () => {
         localStorage.clear(); 
@@ -95,8 +100,8 @@ const NavbarAdmin = () => {
                         
                         {/* Botones de Acción de la Derecha */}
                         <div className="d-flex align-items-center">
-                            <Link to="/admin/dashboard">
-                                <button className="btn me-2 btn-primary" type="button">Dashboard</button>
+                            <Link to="/admin/perfil">
+                                <button className="btn me-2 btn-primary" type="button">Editar Perfil</button>
                             </Link>
                             <button 
                                 className="btn me-2 btn-danger" 

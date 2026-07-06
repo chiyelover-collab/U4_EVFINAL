@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Table, ProgressBar, ListGroup, Button } from 'react-bootstrap';
+import { getAssignments } from '../../services/AdminServices'; 
 import '../../assets/css/DashboardAdmin.css'; 
 
 const AdminDashboard = () => {
     const [nombreUsuario, setNombreUsuario] = useState("Administrador");
+    
+    const [clasesSemana, setClasesSemana] = useState([]);
+    const [loadingHorario, setLoadingHorario] = useState(true);
 
     useEffect(() => {
         const datosUsuario = localStorage.getItem('user');
@@ -13,8 +17,51 @@ const AdminDashboard = () => {
         }
         
         document.body.className = "class_body";
+        
+        cargarHorarioSemanal();
+
         return () => { document.body.className = ""; };
     }, []);
+
+    const cargarHorarioSemanal = async () => {
+        try {
+            setLoadingHorario(true);
+            const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            
+            const assignData = await getAssignments();
+            const asignaciones = assignData.data || assignData || [];
+            
+            let clasesList = [];
+            
+            asignaciones.forEach(assign => {
+                if (assign.schedules && assign.schedules.length > 0) {
+                    const deporte = assign.sport?.name || "Clase";
+                    const coach = assign.coach?.full_name || assign.coach_name || "Sin Asignar";
+                    
+                    assign.schedules.forEach(schedule => {
+                        clasesList.push({
+                            diaNum: schedule.day_of_week,
+                            diaNombre: dias[schedule.day_of_week - 1] || "N/A",
+                            hora: schedule.start_time.substring(0, 5),
+                            deporte: deporte,
+                            instructor: coach
+                        });
+                    });
+                }
+            });
+
+            clasesList.sort((a, b) => {
+                if (a.diaNum !== b.diaNum) return a.diaNum - b.diaNum;
+                return a.hora.localeCompare(b.hora);
+            });
+
+            setClasesSemana(clasesList);
+        } catch (error) {
+            console.error("Error cargando el horario semanal:", error);
+        } finally {
+            setLoadingHorario(false);
+        }
+    };
 
     return (
         <Container as="main" fluid className="px-4">
@@ -26,72 +73,70 @@ const AdminDashboard = () => {
 
             <Row as="section">
                 
-            <Col xs={12} md={4} xxl={4} className="mb-4">
-                <Card as="article" className="class_card1 h-100 shadow-sm">
-                    <Card.Header className="class_card_header text-center">
-                        <h5 className="class_h5 mb-0"> Alertas y Aprobaciones </h5>
-                    </Card.Header>
-                    <Card.Body className="d-flex flex-column p-0 pt-3">
-                        <div className="table-responsive px-3" style={{ maxHeight: '380px', overflowY: 'auto' }}>
-                            <Table bordered responsive className="text-center align-middle mb-0">
-                                <thead className="class_table_header" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                                    <tr>
-                                        <th className="w-25">Prioridad</th>
-                                        <th className="w-50">Detalle</th>
-                                        <th className="w-25">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="class_tbody">
-                                    <tr>
-                                        <td><span className="text-danger fw-bold">Alta</span> <br /> Pago Fallido</td>
-                                        <td>Xiao Chiye <br /> Plan VIP</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span className="text-warning fw-bold">Media</span> <br /> Registro</td>
-                                        <td>Mei Hanxue <br /> Certificado</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Validar</Button> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span className="text-warning fw-bold">Media</span> <br /> Soporte</td>
-                                        <td>Yao Wenyu <br /> Error Reserva</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span className="text-info fw-bold">Baja</span> <br /> Registro</td>
-                                        <td>Xie Lian <br /> Solicitud</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Validar</Button> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span className="text-info fw-bold">Baja</span> <br /> Inventario</td>
-                                        <td>Salón Boxeo <br /> Guantes</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span className="text-info fw-bold">Baja</span> <br /> Inventario</td>
-                                        <td>Salón Yoga <br /> Mats</td>
-                                        <td className="px-2"> 
-                                            <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </div>
-
-
-                    </Card.Body>
-                </Card>
-            </Col>
+                <Col xs={12} md={4} xxl={4} className="mb-4">
+                    <Card as="article" className="class_card1 h-100 shadow-sm">
+                        <Card.Header className="class_card_header text-center">
+                            <h5 className="class_h5 mb-0"> Alertas y Aprobaciones </h5>
+                        </Card.Header>
+                        <Card.Body className="d-flex flex-column p-0 pt-3">
+                            <div className="table-responsive px-3" style={{ maxHeight: '380px', overflowY: 'auto' }}>
+                                <Table bordered responsive className="text-center align-middle mb-0">
+                                    <thead className="class_table_header" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+                                        <tr>
+                                            <th className="w-25">Prioridad</th>
+                                            <th className="w-50">Detalle</th>
+                                            <th className="w-25">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="class_tbody">
+                                        <tr>
+                                            <td><span className="text-danger fw-bold">Alta</span> <br /> Pago Fallido</td>
+                                            <td>Xiao Chiye <br /> Plan VIP</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span className="text-warning fw-bold">Media</span> <br /> Registro</td>
+                                            <td>Mei Hanxue <br /> Certificado</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Validar</Button> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span className="text-warning fw-bold">Media</span> <br /> Soporte</td>
+                                            <td>Yao Wenyu <br /> Error Reserva</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span className="text-info fw-bold">Baja</span> <br /> Registro</td>
+                                            <td>Xie Lian <br /> Solicitud</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Validar</Button> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span className="text-info fw-bold">Baja</span> <br /> Inventario</td>
+                                            <td>Salón Boxeo <br /> Guantes</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span className="text-info fw-bold">Baja</span> <br /> Inventario</td>
+                                            <td>Salón Yoga <br /> Mats</td>
+                                            <td className="px-2"> 
+                                                <Button className="class_button1 w-100 text-nowrap" variant="light">Revisar</Button> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
 
                 <Col xs={12} md={4} xxl={4} className="mb-4">
                     <Card as="article" className="class_card1 h-100 shadow-sm">
@@ -146,34 +191,43 @@ const AdminDashboard = () => {
                 <Col xs={12} md={4} xxl={4} className="mb-4">
                     <Card as="article" className="class_card1 h-100 shadow-sm">
                         <Card.Header className="class_card_header text-center">
-                            <h5 className="class_h5 mb-0"> Clases del Día </h5>
+                            <h5 className="class_h5 mb-0"> Horario de la Semana </h5>
                         </Card.Header>
                         <Card.Body className="p-0 pt-3">
-                            <div className="table-responsive px-3" style={{ maxHeight: '380px', overflowY: 'auto' }}>
-                                <Table bordered responsive className="text-center align-middle mb-0">
-                                    <thead className="class_table_header" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                                        <tr>
-                                            <th>Clase</th>
-                                            <th>Hora</th>
-                                            <th>Instructor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="class_tbody">
-                                        <tr><td>Tenis</td><td>10:00 AM</td><td>Mei Hanxue</td></tr>
-                                        <tr><td>Yoga</td><td>12:00 PM</td><td>Chi Muyao</td></tr>
-                                        <tr><td>Boxeo</td><td>12:00 PM</td><td>Shen Lanzhou</td></tr>
-                                        <tr><td>Basketball</td><td>02:00 PM</td><td>Qiao Tanya</td></tr>
-                                        <tr><td>Tenis</td><td>03:00 PM</td><td>Mei Hanxue</td></tr>
-                                        <tr><td>Natación</td><td>04:00 PM</td><td>Li Yu</td></tr>
-                                        <tr><td>Pilates</td><td>04:00 PM</td><td>Xie Lian</td></tr>
-                                        <tr><td>Fútbol</td><td>06:00 PM</td><td>Wen Ren E</td></tr>
-                                        <tr><td>Tenis</td><td>06:00 PM</td><td>Mei Hanxue</td></tr>
-                                        <tr><td>Natacion</td><td>07:00 PM</td><td>Li Yu</td></tr>
-                                        <tr><td>Tenis</td><td>08:00 PM</td><td>Qi Hualian</td></tr>
-                                        <tr><td>Esgrima</td><td>09:00PM</td><td>Fang Linyuan</td></tr>
-                                    </tbody>
-                                </Table>
-                            </div>
+                            {loadingHorario ? (
+                                <p className="text-center mt-4">Cargando horario...</p>
+                            ) : (
+                                <div className="table-responsive px-3" style={{ maxHeight: '380px', overflowY: 'auto' }}>
+                                    <Table bordered responsive className="text-center align-middle mb-0">
+                                        <thead className="class_table_header" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+                                            <tr>
+                                                <th>Día</th>
+                                                <th>Clase</th>
+                                                <th>Hora</th>
+                                                <th>Instructor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="class_tbody">
+                                            {clasesSemana.length > 0 ? (
+                                                clasesSemana.map((clase, index) => (
+                                                    <tr key={index}>
+                                                        <td className="fw-bold">{clase.diaNombre}</td>
+                                                        <td>{clase.deporte}</td>
+                                                        <td>{clase.hora}</td>
+                                                        <td>{clase.instructor}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="4" className="text-muted py-4">
+                                                        No hay clases programadas esta semana.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            )}
                         </Card.Body>
                     </Card>
                 </Col>

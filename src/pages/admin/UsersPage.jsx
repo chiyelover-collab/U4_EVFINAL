@@ -8,18 +8,18 @@ import { getUsers, createUser, updateUser, deleteUser } from '../../services/Adm
 import '../../assets/css/DashboardAdmin.css'; 
 
 const UsersPage = () => {
-    // 1. Estados de la página
+
     const [usuarios, setUsuarios] = useState([]);
     const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busqueda, setBusqueda] = useState("");
 
-    // Estados del Modal
+
     const [showModal, setShowModal] = useState(false);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
     const [erroresFormulario, setErroresFormulario] = useState({});
 
-    // 2. CONFIGURACIÓN DINÁMICA DE CAMPOS PARA EL MODAL
+
     const camposBase = [
         { name: 'full_name', label: 'Nombre Completo', type: 'text', placeholder: 'Ej: Xiao Chiye', maxLength: 50 },
         { name: 'email', label: 'Email', type: 'email', placeholder: 'usuario@correo.com', maxLength: 50 },
@@ -40,10 +40,9 @@ const UsersPage = () => {
         { name: 'confirm', label: 'Confirmar Contraseña', type: 'password', placeholder: 'Repita la contraseña', maxLength: 40 }
     ];
 
-    // Si estamos editando, solo mostramos los base. Si estamos creando, sumamos los de contraseña.
     const camposUsuario = usuarioSeleccionado ? camposBase : [...camposBase, ...camposPassword];
 
-    // 3. Carga de datos
+
     const cargarUsuarios = async () => {
         try {
             setLoading(true);
@@ -64,7 +63,6 @@ const UsersPage = () => {
         return () => { document.body.className = ""; };
     }, []);
 
-    // 4. Manejo visual (Búsqueda y Modales)
     const handleBuscar = (e) => {
         const termino = e.target.value.toLowerCase();
         setBusqueda(termino);
@@ -93,7 +91,7 @@ const UsersPage = () => {
         setErroresFormulario({});
     };
 
-    // 5. Función principal de guardado con VALIDACIONES
+
     const handleGuardar = async (formData) => {
         let nuevosErrores = {};
         let esValido = true;
@@ -120,7 +118,6 @@ const UsersPage = () => {
             esValido = false;
         }
 
-        // Validación de contraseñas SOLO si estamos creando un usuario nuevo
         if (!usuarioSeleccionado) {
             if (!formData.password || !passRegex.test(formData.password)) {
                 nuevosErrores.password = "Mínimo 8 caracteres, incluya Mayúscula, número y símbolo (!@#*)";
@@ -140,7 +137,7 @@ const UsersPage = () => {
         setErroresFormulario({});
 
         try {
-            // Removemos el campo 'confirm' antes de enviar al backend por limpieza
+
             const datosParaGuardar = { ...formData };
             delete datosParaGuardar.confirm;
 
@@ -158,7 +155,7 @@ const UsersPage = () => {
         }
     };
 
-    // 6. Eliminar
+
     const handleEliminar = async (id, nombre) => {
         const confirmacion = await Swal.fire({
             title: '¿Eliminar usuario?',
@@ -189,7 +186,7 @@ const UsersPage = () => {
         return 'success'; 
     };
 
-    // 7. Instrucciones
+
     const instrucciones = [
         { title: "Búsqueda", text: "Filtre instantáneamente por nombre o correo desde la barra superior." },
         { title: "Gestión", text: <span>Use los botones para <span className="text-warning fw-bold">Editar</span> o <span className="text-danger fw-bold">Eliminar</span> registros.</span> },

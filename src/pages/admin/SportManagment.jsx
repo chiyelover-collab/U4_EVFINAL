@@ -8,25 +8,24 @@ import { getSports, updateSports, createSports, deleteSports } from '../../servi
 import '../../assets/css/DashboardAdmin.css';
 
 const SportManagment = () => {
-    // 1. Estados de la página
+
     const [deportes, setDeportes] = useState([]);
     const [deportesFiltrados, setDeportesFiltrados] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busqueda, setBusqueda] = useState("");
 
-    // Estados del Modal
+
     const [showModal, setShowModal] = useState(false);
     const [deporteSeleccionado, setDeporteSeleccionado] = useState(null);
     const [erroresFormulario, setErroresFormulario] = useState({});
 
-    // 2. CONFIGURACIÓN DEL MODAL (Sin el campo de fecha)
     const camposDeporte = [
         { name: 'name', label: 'Nombre del Deporte', type: 'text', placeholder: 'Ej: Natación', maxLength: 50 },
         { name: 'objective', label: 'Objetivo', type: 'text', placeholder: 'Describe el objetivo principal...', maxLength: 255 },
         { name: 'duration', label: 'Duración (minutos)', type: 'number', placeholder: 'Ej: 60', maxLength: 5 }
     ];
 
-    // 3. Funciones de formato (Solo para mostrar bonito en la tabla)
+
     const formatearFecha = (fecha) => {
         if (!fecha) return "";
         const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -65,7 +64,7 @@ const SportManagment = () => {
         return () => { document.body.className = ""; };
     }, []);
 
-    // 4. Manejo visual
+
     const handleBuscar = (e) => {
         const termino = e.target.value.toLowerCase();
         setBusqueda(termino);
@@ -90,7 +89,7 @@ const SportManagment = () => {
         setErroresFormulario({});
     };
 
-    // 5. Función principal de guardado con la fecha generada por detrás
+    
     const handleGuardar = async (formData) => {
         let nuevosErrores = {};
         let esValido = true;
@@ -124,7 +123,6 @@ const SportManagment = () => {
 
         try {
             if (deporteSeleccionado) {
-                // Si estamos EDITANDO, conservamos la fecha que ya traía de la BD
                 const datosParaGuardar = { 
                     ...formData, 
                     duration: Number(formData.duration),
@@ -134,7 +132,6 @@ const SportManagment = () => {
                 await updateSports(deporteSeleccionado.id, datosParaGuardar);
                 Swal.fire("¡Actualizado!", "El deporte se actualizó con éxito.", "success");
             } else {
-                // Si estamos CREANDO, generamos la fecha automáticamente de forma invisible
                 const hoy = new Date();
                 const fechaBackend = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
                 
@@ -154,7 +151,6 @@ const SportManagment = () => {
         }
     };
 
-    // 6. Eliminar y Cambiar Estado
     const handleEliminar = async (id, nombre) => {
         const confirmacion = await Swal.fire({
             title: '¿Está seguro?',

@@ -30,7 +30,7 @@ const AvailableClasses = () => {
                         <div key={a.id} className="col-12 col-md-4 mb-4">
                             <article className="card user_card1 mx-auto h-100" style={{ border: 'none', borderRadius: '12px' }}>
                                 
-                                {/* Header con fuente del proyecto */}
+                            
                                 <div className="card-header text-center py-3" style={{ 
                                     backgroundColor: '#66b3ff', 
                                     borderRadius: '12px 12px 0 0',

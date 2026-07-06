@@ -52,7 +52,6 @@ const GenericFormModal = ({ show, handleClose, handleSave, title, fields, initia
                                 />
                             )}
                             
-                            {/* Aquí es donde aparece tu texto rojo de error */}
                             {errores[field.name] && (
                                 <span className="text-danger small d-block mt-1">{errores[field.name]}</span>
                             )}

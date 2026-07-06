@@ -8,18 +8,15 @@ import { getRooms, createRoom, updateRoom, deleteRoom } from '../../services/Adm
 import '../../assets/css/DashboardAdmin.css';
 
 const RoomsPage = () => {
-    // 1. Estados de la página
     const [salas, setSalas] = useState([]);
     const [salasFiltradas, setSalasFiltradas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [busqueda, setBusqueda] = useState("");
-    
-    // Estados del Modal
+
     const [showModal, setShowModal] = useState(false);
     const [salaSeleccionada, setSalaSeleccionada] = useState(null);
     const [erroresFormulario, setErroresFormulario] = useState({});
 
-    // 2. Configuración de los campos para el Modal Genérico
     const camposSala = [
         { name: 'name', label: 'Nombre de la Sala', type: 'text', placeholder: 'Ej: Cancha Fútbol 3', maxLength: 50 },
         { name: 'description', label: 'Descripción', type: 'text', placeholder: 'Describe la sala...' },
@@ -28,7 +25,6 @@ const RoomsPage = () => {
         { name: 'observation', label: 'Observación', type: 'text', placeholder: 'Opcional...', maxLength: 255 }
     ];
 
-    // 3. Carga inicial de datos
     const cargarSalas = async () => {
         try {
             setLoading(true);
@@ -49,7 +45,7 @@ const RoomsPage = () => {
         return () => { document.body.className = ""; };
     }, []);
 
-    // 4. Funciones de manejo visual y de estado
+
     const handleBuscar = (e) => {
         const termino = e.target.value.toLowerCase();
         setBusqueda(termino);
@@ -75,7 +71,6 @@ const RoomsPage = () => {
         setErroresFormulario({});
     };
 
-    // 5. Función principal de guardado con las validaciones originales
     const handleGuardar = async (formData) => {
         let nuevosErrores = {};
         let esValido = true;
@@ -107,7 +102,7 @@ const RoomsPage = () => {
             nuevosErrores.observation = "La observación es muy larga (máximo 255 caracteres)";
             esValido = false;
         }
-        if (!regexCompleto.test(formData.observation)) {
+        if (!regexCompleto.test(formData.observation) && formData.observation.length >= 1) {
             nuevosErrores.observation = "La observación solo puede contener letras y números";
             esValido = false;
         }
@@ -138,7 +133,6 @@ const RoomsPage = () => {
         }
     };
 
-    // 6. Eliminar y Cambiar Estado
     const handleEliminar = async (id, nombre) => {
         const confirmacion = await Swal.fire({
             title: '¿Eliminar sala?',
@@ -175,7 +169,6 @@ const RoomsPage = () => {
         }
     };
 
-    // 7. Configuración de instrucciones
     const instrucciones = [
         { title: "Búsqueda", text: "Filtre instantáneamente por nombre de la sala usando la barra superior." },
         { title: "Gestión", text: <span>Use los botones de colores para <span className="text-warning fw-bold">Editar</span> o <span className="text-danger fw-bold">Eliminar</span> las salas.</span> },
@@ -183,7 +176,7 @@ const RoomsPage = () => {
         { title: "Sincronización", text: "Utilice el botón Refrescar para traer los últimos datos actualizados de las salas." }
     ];
 
-    // 8. Renderizado (HTML)
+
     return (
         <Container as="main" className="my-4">
             <Row className="mb-4 align-items-center">

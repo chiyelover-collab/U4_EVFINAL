@@ -1,8 +1,7 @@
 // src/components/Navbar.jsx
 import React from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import logo from '../assets/imagenes/logo_empresa_letra_v1.png'; // Ajusta la ruta a tu carpeta de imágenes
-
+import logo from '../assets/imagenes/logo_empresa_letra_v1.png'; 
 const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -19,6 +18,11 @@ const Navbar = () => {
         if (location.pathname.includes('/user/reservas')) {
         tituloHeader = "Gestión de Reservas";
         subtituloHeader = "Maneja desde aquí tus reservas.";
+    }
+
+    if (location.pathname.includes('/user/perfil')) {
+        tituloHeader = "Perfil de Usuario";
+        subtituloHeader = "Gestiona tu información personal y contraseña";
     }
 
 
@@ -67,7 +71,7 @@ const Navbar = () => {
                             </li>
                         </ul>
                         <div className="d-flex me-3 gap-2">
-                            <button onClick={() => navigate("/edit-profile")} className="btn btn-primary" type="button">
+                            <button onClick={() => navigate("/user/perfil")} className="btn btn-primary" type="button">
                                 Editar Perfil
                             </button>
                             <button onClick={handleLogout} className="btn btn-danger" type="button">

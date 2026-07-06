@@ -37,14 +37,12 @@ const ReservationManagement = () => {
         try {
             setLoading(true);
             
-            // 1. Traer reservas y asignaciones
             const resData = await getMyReservations();
             const rawReservas = resData.data || resData || []; 
             
             const assignData = await getAssignments();
             const asignaciones = assignData.data || assignData || [];
             
-            // 2. Llenar opciones del Modal con el nombre del Coach incluido
             const opciones = [];
             asignaciones.forEach(assignment => {
                 if (assignment.schedules && assignment.schedules.length > 0) {
@@ -59,14 +57,13 @@ const ReservationManagement = () => {
             });
             setClasesDisponibles(opciones);
 
-            // 3. LA SOLUCIÓN: Enriquecer las reservas cruzando el ID con las asignaciones
             const reservasEnriquecidas = rawReservas.map(reserva => {
                 let deporte = "—";
                 let sala = "—";
                 let coach = "—";
                 let horario = "—";
 
-                // Buscar la asignación que contiene el horario de esta reserva
+
                 const asignacionMatch = asignaciones.find(a => 
                     a.schedules && a.schedules.some(s => s.id === reserva.class_schedule_id)
                 );
@@ -82,7 +79,6 @@ const ReservationManagement = () => {
                     }
                 }
 
-                // Devolvemos la reserva original pero le inyectamos los datos visuales
                 return {
                     ...reserva,
                     sport_name_display: deporte,
@@ -109,7 +105,6 @@ const ReservationManagement = () => {
     const handleBuscar = (e) => {
         const termino = e.target.value.toLowerCase();
         setBusqueda(termino);
-        // Ahora filtramos usando nuestra variable cruzada
         const filtradas = reservas.filter(r => r.sport_name_display.toLowerCase().includes(termino));
         setReservasFiltradas(filtradas);
     };
