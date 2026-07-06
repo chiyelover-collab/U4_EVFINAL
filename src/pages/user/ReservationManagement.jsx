@@ -6,7 +6,7 @@ import GenericFormModal from '../../components/GenericFormModal';
 
 import { getMyReservations, createReservation, cancelReservation } from '../../services/UserServices';
 import { getAssignments } from '../../services/AdminServices';
-import '../../assets/css/dashboard_usuario.css'
+import '../../assets/css/Dashboard_Usuario.css'
 
 const ReservationManagement = () => {
     const [reservas, setReservas] = useState([]);
